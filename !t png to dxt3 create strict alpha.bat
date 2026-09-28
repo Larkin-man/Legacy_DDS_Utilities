@@ -1,5 +1,6 @@
 @echo off
 chcp 65001 >nul
+cd /d "%~dp0"
 setlocal enabledelayedexpansion
 
 title PNG to DXT3 (strict black = transparent)

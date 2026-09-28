@@ -1,5 +1,6 @@
 @echo off
 chcp 65001 >nul
+cd /d "%~dp0"
 title Step 3: Analysis and Conversion
 
 if not exist texconv.exe (

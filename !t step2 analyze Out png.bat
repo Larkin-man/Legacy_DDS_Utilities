@@ -1,5 +1,6 @@
 @echo off
 chcp 65001 >nul
+cd /d "%~dp0"
 setlocal enabledelayedexpansion
 
 title Этап 2: Анализ альфа-канала
