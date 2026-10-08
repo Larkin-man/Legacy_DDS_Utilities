@@ -20,7 +20,7 @@ echo. >> "%LOG_FILE%"
 
 set "FOUND_DDS=0"
 
-for %%i in (*.dds) do (
+for %%i in (*.dds *.png) do (
     if not "%%~nxi"=="%LOG_FILE%" (
         set "FOUND_DDS=1"
         
@@ -101,7 +101,6 @@ echo        depth = !DEPTH! >> "%LOG_FILE%"
 echo    mipLevels = !LAYERS! >> "%LOG_FILE%"
 echo    arraySize = 1 >> "%LOG_FILE%"
 echo       format = !FMT! >> "%LOG_FILE%"
-echo    dimension = 2D >> "%LOG_FILE%"
 echo   alpha mode = !ALPHA_MODE! >> "%LOG_FILE%"
 echo       images = !LAYERS! >> "%LOG_FILE%"
 echo   pixel size = !KB! (KB) >> "%LOG_FILE%"
