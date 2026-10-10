@@ -6,7 +6,7 @@ cd /d "%~dp0"
 if not exist TestQuality mkdir TestQuality
 
 echo ============================================================
-echo  Testing different quality settings
+echo  Testing different quality settings to TestQuality directory
 echo ============================================================
 echo.
 

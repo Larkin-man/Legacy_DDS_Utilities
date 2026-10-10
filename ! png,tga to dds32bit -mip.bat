@@ -6,7 +6,7 @@ cd /d "%~dp0"
 :: Создаем папку Out, если её еще нет
 if not exist Out mkdir Out
 
-echo Начинаем конвертацию PNG/TGA -> DDS DXT1 ^(без мип-мапов и альфы^)...
+echo Начинаем конвертацию PNG,TGA в DDS без мип-мапов и альфы...
 echo -------------------------------------------------------------------
 
 :: Цикл ищет все файлы PNG и TGA в текущей папке
@@ -14,9 +14,9 @@ for %%i in (*.png *.tga) do (
     echo Обработка исходника: %%~nxi
     
     :: -alpha off - принудительно удаляет прозрачность из PNG/TGA
-    :: dds:compression=dxt1 - сжимает в формат DXT1
+    :: dds:compression=
     :: dds:mipmaps=0 - отключает генерацию мип-мапов
-    magick.exe "%%~fi" -alpha off -define dds:compression=dxt1 -define dds:mipmaps=0 "Out\%%~ni.dds"
+    magick.exe "%%~fi" -define dds:compression=none -define dds:mipmaps=0 "Out\%%~ni.dds"
 )
 
 echo -------------------------------------------------------------------

@@ -5,10 +5,13 @@ setlocal enabledelayedexpansion
 
 if not exist "Out" mkdir "Out"
 
+echo Разделение изображений на альфу и подложку
+echo ---------------------------------------
+
 for %%F in (*.png *.tga *.dds) do (
     echo Обработка: %%F
     
-    :: Получаем список активных каналов (используем ваш проверенный синтаксис с двумя %%)
+    :: Получаем список активных каналов
     set "CHANNELS="
     for /f "usebackq tokens=*" %%a in (`magick.exe identify -format "%%[channels]" "%%F" 2^>nul`) do (
         set "CHANNELS=%%a"
@@ -24,21 +27,23 @@ for %%F in (*.png *.tga *.dds) do (
     echo !CHANNELS! | findstr /I "a alpha" >nul
     if "!errorlevel!"=="0" set "ALPHA_MODE=Present (!CHANNELS! !CH_NUM!)"
     
-    echo Статус альфы: !ALPHA_MODE!    
+    echo Статус альфы: !ALPHA_MODE!
+    
     :: Финальное ветвление на основе вычисленного CH_NUM
     if "!CH_NUM!"=="4.0" (
-        echo [INFO] Альфа-канал НАЙДЕН. Разделяем каналы...
-        magick "%%F" -alpha extract "Out\%%~nF_alpha.png"
-        magick "%%F" -alpha off "Out\%%~nF_color%%~xF"
-        echo [OK] Успешно разделено.
+      
+        :: -define dds:mipmaps=0 отключает генерацию уровней mipmap
+        magick "%%F" -define dds:mipmaps=0 -alpha extract "Out\%%~nF_alpha.png"
+        magick "%%F" -define dds:mipmaps=0 -alpha off "Out\%%~nF_color%%~xF"
+        echo [OK] Альфа-канал НАЙДЕН. Успешно разделено.
     ) else (
         echo [WARN] Альфа-канал НЕ найден. Копируем только цвет.
-        magick "%%F" -alpha off "Out\%%~nF_color%%~xF"
+        magick "%%F" -define dds:mipmaps=0 -alpha off "Out\%%~nF_color%%~xF"
     )
     
     echo ---------------------------------------
 )
 
 echo.
-echo Готово! Все файлы обработаны.
+echo Готово! Все файлы обработаны (мипмапы отключены).
 pause

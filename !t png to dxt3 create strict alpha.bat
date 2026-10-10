@@ -37,7 +37,7 @@ for %%f in (*.png) do (
     
     if exist "TempAlpha\%%~nf.png" (
         REM Step 2: Convert to DXT3
-        texconv.exe -nologo -f BC2_UNORM -m 1 -y -o Out "TempAlpha\%%~nf.png" >nul 2>&1
+        texconv.exe -nologo -f BC2_UNORM -m 1 -y -o Out "TempAlpha\%%~nf.png" 2>&1
         
         if exist "Out\%%~nf.dds" (
             set /p result=<temp_result.txt

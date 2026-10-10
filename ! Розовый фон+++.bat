@@ -18,25 +18,26 @@ for %%i in (*.png) do (
     :: ШАГ 2: Вычищаем розовый из RGB-каналов большой картинки, заменяя его на черный
     if exist "Out\%%~ni_step1.png" (
         magick.exe "Out\%%~ni_step1.png" -background black -alpha background "Out\%%~ni_step2.png"
-
     )
     
     :: ШАГ 3: Безопасно уменьшаем до 32x32 и жестко отсекаем полупрозрачность по порогу 50%
     if exist "Out\%%~ni_step2.png" (
         magick.exe "Out\%%~ni_step2.png" -thumbnail 32x32! -channel A -threshold 50%% +channel "Out\%%~ni_step3.png"
-
     )
     
     :: ФИКС КАНАЛОВ: Повторно зачищаем скрытый мусорный цвет после ресайза, заливая его черным
     if exist "Out\%%~ni_step3.png" (
         magick.exe "Out\%%~ni_step3.png" -background black -alpha background "Out\%%~ni_step4.png"
-
     )
     
     :: ШАГ 4: Запекаем результат в идеальный несжатый DDS ARGB без мип-мапов
     if exist "Out\%%~ni_step4.png" (
-        magick.exe "Out\%%~ni_step4.png" -define dds:compression=none -define dds:mipmaps=0 "Out\%%~ni.dds"
-
+        magick.exe "Out\%%~ni_step4.png" -define dds:compression=none -define dds:mipmaps=0 "Out\%%~ni_argb.dds"
+    )
+	 
+	 :: ШАГ 5: Пережимаем идеальный несжатый DDS ARGB в легкий формат DXT1 без мип-мапов
+    if exist "Out\%%~ni_argb.dds" (
+        magick.exe "Out\%%~ni_argb.dds" -define dds:compression=dxt1 -define dds:mipmaps=0 "Out\%%~ni.dds"
     )
 )
 

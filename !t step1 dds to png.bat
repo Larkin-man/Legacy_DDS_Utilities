@@ -39,7 +39,7 @@ for %%f in (*.dds) do (
     
     if !i_dxt1! equ 0 (
         echo   Формат: Не DXT1 - конвертирую в PNG...
-        texconv.exe -nologo -ft png -o Out "%%f" >nul 2>&1
+        texconv.exe -nologo -ft png -o Out "%%f" 2>&1
         if exist "Out\%%~nf.png" (
             echo   [OK] Создан Out\%%~nf.png
             set /a count+=1

@@ -3,24 +3,30 @@ setlocal enabledelayedexpansion
 chcp 65001 >nul
 cd /d "%~dp0"
 
-set "LOG_FILE=_dds_info.txt"
+if not exist magick.exe (
+    echo ОШИБКА: magick.exe не найден!
+    pause
+    exit
+)
+
+set "LOG_FILE=_diag_info.txt"
 
 :: Выводим стартовое сообщение в консоль
 echo ===================================================================
-echo   ПОДРОБНАЯ ДИАГНОСТИКА DDS (ImageMagick)
+echo   ПОДРОБНАЯ ДИАГНОСТИКА tga и png (ImageMagick)
 echo ===================================================================
 echo Выполнение запущено. Пожалуйста, подождите...
 echo.
 
-:: Очищаем старый лог и пишем заголовок в файл
+:: Очищаем старый лог и пишем заголовок в файл. символ '>' очищает файл, если он существовал
 echo =================================================================== > "%LOG_FILE%"
-echo   ПОДРОБНАЯ ДИАГНОСТИКА DDS (ImageMagick)                           >> "%LOG_FILE%"
+echo   ПОДРОБНАЯ ДИАГНОСТИКА tga и png (ImageMagick)                           >> "%LOG_FILE%"
 echo =================================================================== >> "%LOG_FILE%"
 echo. >> "%LOG_FILE%"
 
 set "FOUND_DDS=0"
 
-for %%i in (*.dds *.png) do (
+for %%i in (*.tga *.png) do (
     if not "%%~nxi"=="%LOG_FILE%" (
         set "FOUND_DDS=1"
         
@@ -32,8 +38,8 @@ for %%i in (*.dds *.png) do (
 )
 
 if "!FOUND_DDS!"=="0" (
-    echo В текущей папке файлы с расширением .dds не обнаружены.
-    echo В текущей папке файлы с расширением .dds не обнаружены. >> "%LOG_FILE%"
+    echo В текущей папке файлы с расширением .tga .png не обнаружены.
+    echo В текущей папке файлы с расширением .tga .png не обнаружены. >> "%LOG_FILE%"
 )
 
 echo.
@@ -54,8 +60,6 @@ set "FILE_NAME=%~nx1"
 
 :: Получаем вес файла на диске средствами Windows
 set "FILE_BYTES=%~z1"
-set /a "KB=!FILE_BYTES! / 1024"
-if "!KB!"=="0" set "KB=1"
 
 :: Получаем дату изменения файла
 set "FILE_DATE=%~t1"
@@ -98,12 +102,11 @@ echo Файл: !FILE_NAME! >> "%LOG_FILE%"
 echo        width = !W! >> "%LOG_FILE%"
 echo       height = !H! >> "%LOG_FILE%"
 echo        depth = !DEPTH! >> "%LOG_FILE%"
-echo    mipLevels = !LAYERS! >> "%LOG_FILE%"
-echo    arraySize = 1 >> "%LOG_FILE%"
 echo       format = !FMT! >> "%LOG_FILE%"
 echo   alpha mode = !ALPHA_MODE! >> "%LOG_FILE%"
 echo       images = !LAYERS! >> "%LOG_FILE%"
-echo   pixel size = !KB! (KB) >> "%LOG_FILE%"
+echo   pixel size = !FILE_BYTES! Byte >> "%LOG_FILE%"
+echo    mipLevels = !LAYERS! (mb bug)>> "%LOG_FILE%"
 echo     modified = !FILE_DATE! >> "%LOG_FILE%"
 echo =================================================================== >> "%LOG_FILE%"
 

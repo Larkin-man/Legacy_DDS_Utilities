@@ -36,7 +36,7 @@ for %%f in (*.png) do (
     
     if exist "TempAlpha\%%~nf.png" (
         REM Step 2: Convert to DXT3 via NVIDIA
-        nvdxt.exe -file "TempAlpha\%%~nf.png" -output "Out\%%~nf.dds" -dxt3 -nomipmap -quality_highest >nul 2>&1
+        nvdxt.exe -file "TempAlpha\%%~nf.png" -output "Out\%%~nf.dds" -dxt3 -nomipmap -quality_highest 2>&1
         
         if exist "Out\%%~nf.dds" (
             echo   [OK] Out\%%~nf.dds

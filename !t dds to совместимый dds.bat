@@ -65,7 +65,7 @@ for %%f in (*.dds) do (
             echo   [CONVERT] Incompatible format - converting to DXT5...
             
             REM Convert to DXT5 with DX9 headers for Morrowind compatibility
-            texconv.exe -nologo -f BC3_UNORM -dx9 -y -o Morrowind_Compatible "%%f" >nul 2>&1
+            texconv.exe -nologo -f BC3_UNORM -dx9 -y -o Morrowind_Compatible "%%f" 2>&1
             
             if exist "Morrowind_Compatible\%%~nxf" (
                 echo   [OK] Saved to Morrowind_Compatible\%%~nxf

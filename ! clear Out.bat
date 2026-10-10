@@ -1,5 +1,5 @@
 @echo off
-chcp 65001 > nul
+chcp 65001 >nul
 cd /d "%~dp0"
 
 if exist "Out" (
